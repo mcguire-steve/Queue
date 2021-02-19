@@ -4,9 +4,12 @@ Queue handling library (designed on Arduino)
 
 This library was designed for Arduino, yet may be compiled without change with gcc for other purposes/targets
 
+Queue class has since start been called `Queue`. Unfortunately, on some platforms or when using FreeRTOS, Queue is already declared.
+For compatibility purposes, `Queue` class has been renamed to `cppQueue`. Sorry for the inconvenience...
+
 ## Usage
 
-- Declare a Queue instance `(uint16_t size_rec, uint16_t nb_recs=20, QueueType type=FIFO, overwrite=false)` (called `q` below):
+- Declare a `cppQueue` instance `(uint16_t size_rec, uint16_t nb_recs=20, QueueType type=FIFO, overwrite=false)` (called `q` below):
   - `size_rec` - size of a record in the queue
   - `nb_recs` - number of records in the queue
   - `type` - Queue implementation type: _FIFO_, _LIFO_
@@ -33,7 +36,7 @@ This library was designed for Arduino, yet may be compiled without change with g
   - warning: no associated drop function, not to use with `q.drop`
   - note: only useful with FIFO implementation, use `q.peek` instead with a LIFO
 - Other methods:
-  - `q.IsInitialized()`: `true` if initialized properly, `false` otherwise
+  - `q.isInitialized()`: `true` if initialized properly, `false` otherwise
   - `q.isEmpty()`: `true` if empty, `false` otherwise
   - `q.isFull()`: `true` if full, `false` otherwise
   - `q.sizeOf()`: queue size in bytes (returns 0 in case queue allocation failed)
@@ -52,6 +55,7 @@ In this particular case, dropping decision must be made before re-enabling inter
 
 - [SimpleQueue.ino](examples/SimpleQueue/SimpleQueue.ino): Simple queue example (both LIFO FIFO implementations can be tested)
 - [PointersQueue.ino](examples/PointersQueue/PointersQueue.ino): Queue of string pointers for string processing
+- [SerialQueue.ino](examples/SerialQueue/SerialQueue.ino): Print characters received from Serial to Serial after reception of EOT char
 - [QueueDuplicates.ino](examples/QueueDuplicates/QueueDuplicates.ino): Simple test to test queue duplicates before pushing to queue
 - [QueueIdxPeeking.ino](examples/QueueIdxPeeking/QueueIdxPeeking.ino): Simple test to test queue index picking
 - [RolloverTest.ino](examples/RolloverTest/RolloverTest.ino): Simple test to test queue rollover (for lib testing purposes mainly)
