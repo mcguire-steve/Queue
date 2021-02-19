@@ -89,7 +89,7 @@ bool __attribute__((nonnull)) Queue::push(const void * const record)
 	if (!isFull())	{ cnt++; }	// Increase records count
 	else if (ovw)				// Queue is full and overwrite is allowed
 	{
-		if (impl == FIFO)			{ inc_idx(&out, rec_nb, 0); }	// as oldest record is overwritten, increment out
+	  if (impl == QueueType::FIFO)			{ inc_idx(&out, rec_nb, 0); }	// as oldest record is overwritten, increment out
 		//else if (impl == LIFO)	{}								// Nothing to do in this case
 	}
 
@@ -102,12 +102,12 @@ bool __attribute__((nonnull)) Queue::pop(void * const record)
 
 	if (isEmpty())	{ return false; }	// No more records
 
-	if (impl == FIFO)
+	if (impl == QueueType::FIFO)
 	{
 		pStart = queue + (rec_sz * out);
 		inc_idx(&out, rec_nb, 0);
 	}
-	else if (impl == LIFO)
+	else if (impl == QueueType::LIFO)
 	{
 		dec_idx(&in, rec_nb, 0);
 		pStart = queue + (rec_sz * in);
@@ -126,12 +126,12 @@ bool __attribute__((nonnull)) Queue::peek(void * const record)
 
 	if (isEmpty())	{ return false; }	// No more records
 
-	if (impl == FIFO)
+	if (impl == QueueType::FIFO)
 	{
 		pStart = queue + (rec_sz * out);
 		// No change on out var as it's just a peek
 	}
-	else if (impl == LIFO)
+	else if (impl == QueueType::LIFO)
 	{
 		uint16_t rec = in;	// Temporary var for peek (no change on in with dec_idx)
 		dec_idx(&rec, rec_nb, 0);
@@ -148,8 +148,8 @@ bool Queue::drop(void)
 {
 	if (isEmpty())			{ return false; }	// No more records
 
-	if (impl == FIFO)		{ inc_idx(&out, rec_nb, 0); }
-	else if (impl == LIFO)	{ dec_idx(&in, rec_nb, 0); }
+	if (impl == QueueType::FIFO)		{ inc_idx(&out, rec_nb, 0); }
+	else if (impl == QueueType::LIFO)	{ dec_idx(&in, rec_nb, 0); }
 	else					{ return false; }
 
 	cnt--;	// Decrease records count
@@ -163,11 +163,11 @@ bool Queue::peekIdx(void * const record, const uint16_t idx)
 
 	if (idx + 1 > getCount())	{ return false; }	// Index out of range
 
-	if (impl == FIFO)
+	if (impl == QueueType::FIFO)
 	{
 		pStart = queue + (rec_sz * ((out + idx) % rec_nb));
 	}
-	else if (impl == LIFO)
+	else if (impl == QueueType::LIFO)
 	{
 		pStart = queue + (rec_sz * idx);
 	}
