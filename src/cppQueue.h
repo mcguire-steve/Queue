@@ -19,7 +19,7 @@
 /*!\enum enumQueueType
 ** \brief Queue behavior enumeration (FIFO, LIFO)
 **/
-typedef enum enumQueueType {
+typedef enum class enumQueueType {
 	FIFO = 0,	//!< First In First Out behavior
 	LIFO = 1	//!< Last In First Out behavior
 } QueueType;
@@ -50,7 +50,7 @@ public:
 	**	\param [in] overwrite - Overwrite previous records when queue is full
 	**	\return nothing
 	**/
-	Queue(const uint16_t size_rec, const uint16_t nb_recs=20, const QueueType type=FIFO, const bool overwrite=false);
+  Queue(const uint16_t size_rec, const uint16_t nb_recs=20, const QueueType type=QueueType::FIFO, const bool overwrite=false);
 
 	/*!	\brief Queue destructor: release dynamically allocated queue
 	**/
